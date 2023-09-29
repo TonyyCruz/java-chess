@@ -1,5 +1,9 @@
 package boardgame;
 
+
+/**
+ * This class is responsible for storing the position of the pieces.
+ */
 public class Position {
   private int row;
   private int column;
