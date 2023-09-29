@@ -1,7 +1,7 @@
 package boardgame;
 
 /**
- * This class is responsible for instantiating chess pieces.
+ * This class is the chess pieces base.
  */
 public class Piece {
   protected Position position;
