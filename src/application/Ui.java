@@ -2,7 +2,11 @@ package application;
 
 import chess.ChessPiece;
 
-public class UI {
+/**
+ * This shows the chess game in the screen.
+ */
+public class Ui {
+
   public static void printBoard(ChessPiece[][] pieces) {
     for (int r = 0; r < pieces.length; r += 1) {
       System.out.printf("%d ", pieces.length - r);
