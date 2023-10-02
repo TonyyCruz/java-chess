@@ -1,11 +1,43 @@
 package application;
 
+import java.util.InputMismatchException;
+import java.util.Scanner;
 import chess.ChessPiece;
+import chess.ChessPosition;
 
 /**
  * This shows the chess game in the screen.
  */
 public class Ui {
+
+  /**
+   * This receive a string with a chess position, separates the position into 'char' and 'int' and
+   * returns the stance of a ChessPosition.
+   */
+
+  // https://stackoverflow.com/questions/2979383/how-to-clear-the-console-using-java
+  public static void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+  }
+
+  /**
+   * This receive a string position from a scanner and return a chess position.
+   */
+  public static ChessPosition readChessPosition(Scanner sc) {
+    try {
+      String in = sc.next();
+
+      char column = in.charAt(0);
+      int row = Integer.parseInt(in.substring(1));
+
+      return new ChessPosition(column, row);
+
+    } catch (RuntimeException e) {
+      throw new InputMismatchException("Position error: The position need be from 'a1' to 'h8'.");
+    }
+  }
+
   /**
    * This print a board with the current state of the game.
    */
