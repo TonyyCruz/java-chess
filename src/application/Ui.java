@@ -2,7 +2,13 @@ package application;
 
 import chess.ChessPiece;
 
-public class UI {
+/**
+ * This shows the chess game in the screen.
+ */
+public class Ui {
+  /**
+   * This print a board with the current state of the game.
+   */
   public static void printBoard(ChessPiece[][] pieces) {
     for (int r = 0; r < pieces.length; r += 1) {
       System.out.printf("%d ", pieces.length - r);
@@ -15,6 +21,9 @@ public class UI {
     System.out.println("  a b c d e f g h");
   }
 
+  /**
+   * This print the received piece.
+   */
   public static void print(ChessPiece piece) {
     if (piece == null) {
       System.out.print("-");
