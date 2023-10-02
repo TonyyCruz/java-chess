@@ -34,6 +34,8 @@ public class Program {
 
         ChessPiece capturedPiece = chessMatch.performChessMovie(source, target);
 
+        System.out.println(capturedPiece);
+
       } catch (ChessException e) {
         System.out.println(e.getMessage());
         sc.nextLine();
