@@ -1,6 +1,8 @@
 package chess;
 
 import boardgame.Board;
+import boardgame.Piece;
+import boardgame.Position;
 import chess.pieces.Bishop;
 import chess.pieces.Horse;
 import chess.pieces.King;
@@ -36,6 +38,31 @@ public class ChessMatch {
 
   private void placeNewPiece(char column, int row, ChessPiece piece) {
     board.placePieece(piece, new ChessPosition(column, row).toPosition());
+  }
+
+  public ChessPiece performChessMovie(ChessPosition sourcePosition, ChessPosition targetPosition) {
+    Position source = sourcePosition.toPosition();
+    Position target = targetPosition.toPosition();
+
+    validateSourcePosition(source);
+
+    Piece capturedPiece = makeMove(source, target);
+
+    return (ChessPiece) capturedPiece;
+  }
+
+  private Piece makeMove(Position source, Position target) {
+    Piece movedPiece = board.removePieece(source);
+    Piece capturedPiece = board.removePieece(target);
+    board.placePieece(movedPiece, target);
+
+    return capturedPiece;
+  }
+
+  private void validateSourcePosition(Position position) {
+    if (!board.thereIsApiece(position)) {
+      throw new ChessException("ChessMatch error: There is no piece on source position.");
+    }
   }
 
   /**
