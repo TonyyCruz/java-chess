@@ -15,5 +15,6 @@ public class Program {
 
     Ui.printBoard(chessMatch.getPieces());
 
+    // System.out.println(new ChessPosition('h', 8));
   }
 }
