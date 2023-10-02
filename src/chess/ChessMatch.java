@@ -40,6 +40,9 @@ public class ChessMatch {
     board.placePieece(piece, new ChessPosition(column, row).toPosition());
   }
 
+  /**
+   * This performs the act of moving the pieces.
+   */
   public ChessPiece performChessMovie(ChessPosition sourcePosition, ChessPosition targetPosition) {
     Position source = sourcePosition.toPosition();
     Position target = targetPosition.toPosition();

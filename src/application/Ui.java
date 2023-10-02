@@ -14,6 +14,16 @@ public class Ui {
    * This receive a string with a chess position, separates the position into 'char' and 'int' and
    * returns the stance of a ChessPosition.
    */
+
+  // https://stackoverflow.com/questions/2979383/how-to-clear-the-console-using-java
+  public static void clearScreen() {
+    System.out.print("\033[H\033[2J");
+    System.out.flush();
+  }
+
+  /**
+   * This receive a string position from a scanner and return a chess position.
+   */
   public static ChessPosition readChessPosition(Scanner sc) {
     try {
       String in = sc.next();
