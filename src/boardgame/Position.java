@@ -33,10 +33,14 @@ public class Position {
     this.column = column;
   }
 
+  public void setValue(int row, int column) {
+    this.row = row;
+    this.column = column;
+  }
+
   @Override
   public String toString() {
     return "Position [row=" + row + ", column=" + column + "]";
   }
-
 
 }
