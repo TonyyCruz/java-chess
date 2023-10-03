@@ -45,9 +45,10 @@ public class Board {
    */
   public Piece piece(Position position) {
     if (!positionExists(position)) {
-      throw new BoardException("This position does not exist on the board.");
+      throw new BoardException("Board error: This position does not exist on the board.");
     }
 
+    System.out.println(position.getRow() + " ==Board==L-51 == " + position.getColumn());
     return pieces[position.getRow()][position.getColumn()];
   }
 
@@ -85,7 +86,7 @@ public class Board {
   }
 
   public boolean positionExists(int row, int column) {
-    return row >= 0 && row <= rows && column >= 0 && column <= columns;
+    return row >= 0 && row < rows && column >= 0 && column < columns;
   }
 
   public boolean positionExists(Position position) {
@@ -97,7 +98,7 @@ public class Board {
    */
   public boolean thereIsApiece(Position position) {
     if (!positionExists(position)) {
-      throw new BoardException("This position does not exist on the board.");
+      throw new BoardException("Board error: This position does not exist on the board.");
     }
 
     return piece(position) != null;
