@@ -9,11 +9,9 @@ import chess.ChessPosition;
  * This shows the chess game in the screen.
  */
 public class Ui {
-
-  /**
-   * This receive a string with a chess position, separates the position into 'char' and 'int' and
-   * returns the stance of a ChessPosition.
-   */
+  // https://stackoverflow.com/questions/5762491/how-to-print-color-in-console-using-system-out-println
+  public static final String ANSI_RESET = "\u001B[0m";
+  public static final String ANSI_GREEN_BACKGROUND = "\u001B[42m";
 
   // https://stackoverflow.com/questions/2979383/how-to-clear-the-console-using-java
   public static void clearScreen() {
@@ -46,7 +44,19 @@ public class Ui {
       System.out.printf("%d ", pieces.length - r);
 
       for (int c = 0; c < pieces.length; c += 1) {
-        print(pieces[r][c]);
+        print(pieces[r][c], false);
+      }
+      System.out.println();
+    }
+    System.out.println("  a b c d e f g h");
+  }
+
+  public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
+    for (int i = 0; i < pieces.length; i += 1) {
+      System.out.printf("%d ", pieces.length - i);
+
+      for (int j = 0; j < pieces.length; j += 1) {
+        print(pieces[i][j], possibleMoves[i][j]);
       }
       System.out.println();
     }
@@ -56,11 +66,14 @@ public class Ui {
   /**
    * This print the received piece.
    */
-  public static void print(ChessPiece piece) {
+  public static void print(ChessPiece piece, boolean paintBackground) {
+    if (paintBackground) {
+      System.out.print(ANSI_GREEN_BACKGROUND);
+    }
     if (piece == null) {
-      System.out.print("-");
+      System.out.print("-" + ANSI_RESET);
     } else {
-      System.out.print(piece);
+      System.out.print(piece + ANSI_RESET);
     }
     System.out.print(" ");
   }
