@@ -2,6 +2,7 @@ package application;
 
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
 
@@ -37,6 +38,19 @@ public class Ui {
   }
 
   /**
+   * This shows the board, turn and current player.
+   */
+  public static void printMatch(ChessMatch chessMatch) {
+    System.out.println("Current turn: " + chessMatch.getTurn());
+    System.out.println();
+
+    printBoard(chessMatch.getPieces());
+    System.out.println();
+
+    System.out.println("Current player: " + chessMatch.getCurrentPlayer());
+  }
+
+  /**
    * This print a board with the current state of the game.
    */
   public static void printBoard(ChessPiece[][] pieces) {
@@ -51,6 +65,9 @@ public class Ui {
     System.out.println("  a b c d e f g h");
   }
 
+  /**
+   * This shows the frame on the screen.
+   */
   public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
     for (int i = 0; i < pieces.length; i += 1) {
       System.out.printf("%d ", pieces.length - i);
