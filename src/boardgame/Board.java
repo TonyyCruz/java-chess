@@ -48,7 +48,6 @@ public class Board {
       throw new BoardException("Board error: This position does not exist on the board.");
     }
 
-    System.out.println(position.getRow() + " ==Board==L-51 == " + position.getColumn());
     return pieces[position.getRow()][position.getColumn()];
   }
 
