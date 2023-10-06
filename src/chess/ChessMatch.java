@@ -1,5 +1,7 @@
 package chess;
 
+import java.util.ArrayList;
+import java.util.List;
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
@@ -16,6 +18,9 @@ public class ChessMatch {
   private Board board;
   private int turn;
   private Color currentPlayer;
+
+  private List<Piece> pieceOnTheTable = new ArrayList<>();
+  private List<Piece> capturedPieces = new ArrayList<>();
 
   /**
    * The class will be initialized with the default settings.
@@ -50,8 +55,21 @@ public class ChessMatch {
     return mat;
   }
 
+  /**
+   * This method receive a piece, a column and a row. The received piece is added to the board in
+   * the received position and is added on the piecesOnTheTable.
+   * 
+   * @param column
+   *
+   * @param row
+   * 
+   * @param piece
+   * 
+   */
   private void placeNewPiece(char column, int row, ChessPiece piece) {
     board.placePieece(piece, new ChessPosition(column, row).toPosition());
+
+    pieceOnTheTable.add(piece);
   }
 
   /**
@@ -65,7 +83,8 @@ public class ChessMatch {
   }
 
   /**
-   * This performs the act of moving the pieces.
+   * This performs the act of moving the pieces according to the chess positions. Return the
+   * captured piece.
    */
   public ChessPiece performChessMovie(ChessPosition sourcePosition, ChessPosition targetPosition) {
     Position source = sourcePosition.toPosition();
@@ -81,10 +100,19 @@ public class ChessMatch {
     return (ChessPiece) capturedPiece;
   }
 
+  /**
+   * This moving the pieces according to the matrix position. The source piece is placed in the
+   * target position and If any piece is captured it is removed from the board.
+   */
   private Piece makeMove(Position source, Position target) {
     Piece movedPiece = board.removePieece(source);
     Piece capturedPiece = board.removePieece(target);
     board.placePieece(movedPiece, target);
+
+    if (capturedPiece != null) {
+      this.pieceOnTheTable.remove(capturedPiece);
+      this.capturedPieces.add(capturedPiece);
+    }
 
     return capturedPiece;
   }
