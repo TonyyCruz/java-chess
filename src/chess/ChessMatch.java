@@ -65,7 +65,8 @@ public class ChessMatch {
   }
 
   /**
-   * This performs the act of moving the pieces.
+   * This performs the act of moving the pieces according to the chess positions. Return the
+   * captured piece.
    */
   public ChessPiece performChessMovie(ChessPosition sourcePosition, ChessPosition targetPosition) {
     Position source = sourcePosition.toPosition();
@@ -81,6 +82,9 @@ public class ChessMatch {
     return (ChessPiece) capturedPiece;
   }
 
+  /**
+   * This moving the pieces according to the matrix position.
+   */
   private Piece makeMove(Position source, Position target) {
     Piece movedPiece = board.removePieece(source);
     Piece capturedPiece = board.removePieece(target);

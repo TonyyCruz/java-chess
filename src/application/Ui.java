@@ -1,10 +1,14 @@
 package application;
 
+import java.util.Arrays;
 import java.util.InputMismatchException;
+import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
 import chess.ChessMatch;
 import chess.ChessPiece;
 import chess.ChessPosition;
+import chess.Color;
 
 /**
  * This shows the chess game in the screen.
@@ -38,15 +42,34 @@ public class Ui {
   }
 
   /**
+   * This method has the responsibility to display the captured pieces on the screen.
+   */
+  private static void printCapturedPieces(List<ChessPiece> captured) {
+    List<ChessPiece> white =
+        captured.stream().filter(x -> x.getColor() == Color.WHITE).collect(Collectors.toList());
+
+    List<ChessPiece> black =
+        captured.stream().filter(x -> x.getColor() == Color.BLACK).collect(Collectors.toList());
+
+    System.out.println("Captured pieces:");
+    System.out.println("White: " + Arrays.toString(white.toArray()));
+    System.out.println("Black: " + Arrays.toString(black.toArray()));
+  }
+
+  /**
    * This shows the board, turn and current player.
    */
-  public static void printMatch(ChessMatch chessMatch) {
+  public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturesd) {
     System.out.println("Current turn: " + chessMatch.getTurn());
     System.out.println();
 
-    printBoard(chessMatch.getPieces());
-    System.out.println();
 
+    printBoard(chessMatch.getPieces());
+
+    System.out.println();
+    printCapturedPieces(capturesd);
+
+    System.out.println();
     System.out.println("Current player: " + chessMatch.getCurrentPlayer());
   }
 

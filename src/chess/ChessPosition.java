@@ -30,6 +30,10 @@ public class ChessPosition {
     return row;
   }
 
+  /**
+   * This receive a chess position "from a1 to h8" and returns the respective position in the
+   * matrix.
+   */
   protected Position toPosition() {
     int matrixRow = 8 - row;
     int matrixColumn = column - 'a';
@@ -37,6 +41,9 @@ public class ChessPosition {
     return new Position(matrixRow, matrixColumn);
   }
 
+  /**
+   * This receive a position and returns a chess position "a1 to h8".
+   */
   protected static ChessPosition fromPosition(Position position) {
     int chessRow = 8 - position.getRow();
     char chessColumn = (char) ('a' + position.getColumn());
