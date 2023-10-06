@@ -2,6 +2,7 @@ package chess;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 import boardgame.Board;
 import boardgame.Piece;
 import boardgame.Position;
@@ -18,8 +19,9 @@ public class ChessMatch {
   private Board board;
   private int turn;
   private Color currentPlayer;
+  private boolean check;
 
-  private List<Piece> pieceOnTheTable = new ArrayList<>();
+  private List<Piece> piecesOnTheBoard = new ArrayList<>();
   private List<Piece> capturedPieces = new ArrayList<>();
 
   /**
@@ -69,7 +71,7 @@ public class ChessMatch {
   private void placeNewPiece(char column, int row, ChessPiece piece) {
     board.placePieece(piece, new ChessPosition(column, row).toPosition());
 
-    pieceOnTheTable.add(piece);
+    piecesOnTheBoard.add(piece);
   }
 
   /**
@@ -110,11 +112,45 @@ public class ChessMatch {
     board.placePieece(movedPiece, target);
 
     if (capturedPiece != null) {
-      this.pieceOnTheTable.remove(capturedPiece);
+      this.piecesOnTheBoard.remove(capturedPiece);
       this.capturedPieces.add(capturedPiece);
     }
 
     return capturedPiece;
+  }
+
+  /**
+   * This method undo the last piece movement.
+   */
+  private void undoMove(Position source, Position target, Piece capturedPiece) {
+    Piece undoThisPieceMovie = board.removePieece(target);
+    board.placePieece(undoThisPieceMovie, source);
+
+    if (capturedPiece != null) {
+      board.placePieece(capturedPiece, target);
+      piecesOnTheBoard.add(capturedPiece);
+      this.capturedPieces.remove(capturedPiece);
+    }
+  }
+
+  private Color opponentColor(Color color) {
+    return (color == Color.WHITE) ? Color.BLACK : Color.WHITE;
+  }
+
+  /**
+   * This method returns the king with the received color.
+   */
+  private ChessPiece king(Color color) {
+    List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color)
+        .collect(Collectors.toList());
+
+    for (Piece p : list) {
+      if (p instanceof King) {
+        return (ChessPiece) p;
+      }
+    }
+
+    throw new IllegalStateException("The " + color + " king is not on the board.");
   }
 
   private void validateSourcePosition(Position position) {
