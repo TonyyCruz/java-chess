@@ -38,6 +38,10 @@ public class ChessMatch {
     return turn;
   }
 
+  public boolean getCheck() {
+    return check;
+  }
+
   public Color getCurrentPlayer() {
     return currentPlayer;
   }
@@ -97,6 +101,13 @@ public class ChessMatch {
 
     Piece capturedPiece = makeMove(source, target);
 
+    if (testCheck(currentPlayer)) {
+      undoMove(source, target, capturedPiece);
+      throw new ChessException("You can´t put yourself in check.");
+    }
+
+    check = testCheck(opponentColor(currentPlayer));
+
     nextTurn();
 
     return (ChessPiece) capturedPiece;
@@ -138,13 +149,24 @@ public class ChessMatch {
   }
 
   /**
+   * This filter the pieces in the game and returns the pieces with received color.
+   * 
+   * @param color
+   * 
+   * @return The pieces that are in the game and have the color received by parameter.
+   */
+  private List<Piece> getPiecesWithTheColor(Color color) {
+    return piecesOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color)
+        .collect(Collectors.toList());
+  }
+
+  /**
    * This method returns the king with the received color.
    */
   private ChessPiece king(Color color) {
-    List<Piece> list = piecesOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color)
-        .collect(Collectors.toList());
+    List<Piece> playerPieces = getPiecesWithTheColor(color);
 
-    for (Piece p : list) {
+    for (Piece p : playerPieces) {
       if (p instanceof King) {
         return (ChessPiece) p;
       }
@@ -153,6 +175,31 @@ public class ChessMatch {
     throw new IllegalStateException("The " + color + " king is not on the board.");
   }
 
+  /**
+   * Verify if the player with received color is in check.
+   * 
+   * @param color
+   * 
+   * @return boolean - If the king with received color is in check or not.
+   */
+  private boolean testCheck(Color color) {
+    Position kingPosition = king(color).getChessPosition().toPosition();
+    List<Piece> opponentPieces = getPiecesWithTheColor(opponentColor(color));
+
+    for (Piece p : opponentPieces) {
+      if (p.possibleMove(kingPosition)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /**
+   * verify if the piece in the received position exists, if can move and in the piece belong to the
+   * player.
+   * 
+   * @param position
+   */
   private void validateSourcePosition(Position position) {
     if (!board.thereIsApiece(position)) {
       throw new ChessException("There is no piece on source position.");

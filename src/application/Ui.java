@@ -71,6 +71,10 @@ public class Ui {
 
     System.out.println();
     System.out.println("Current player: " + chessMatch.getCurrentPlayer());
+
+    if (chessMatch.getCheck()) {
+      System.out.println("CHECK");
+    }
   }
 
   /**

@@ -17,6 +17,13 @@ public abstract class Piece {
 
   public abstract boolean[][] possibleMoves();
 
+  /**
+   * This method receive a position and verify if the current piece can move for the position.
+   * 
+   * @param position
+   * 
+   * @return Whether or not the piece can move to the given position.
+   */
   public boolean possibleMove(Position position) {
     return possibleMoves()[position.getRow()][position.getColumn()];
   }
