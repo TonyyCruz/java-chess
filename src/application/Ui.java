@@ -57,9 +57,9 @@ public class Ui {
   }
 
   /**
-   * This shows the board, turn and current player.
+   * This method shows the game board, the turn number and current player color.
    */
-  public static void printMatch(ChessMatch chessMatch, List<ChessPiece> capturesd) {
+  public static void printMatch(ChessMatch chessMatch, List<ChessPiece> captured) {
     System.out.println("Current turn: " + chessMatch.getTurn());
     System.out.println();
 
@@ -67,10 +67,21 @@ public class Ui {
     printBoard(chessMatch.getPieces());
 
     System.out.println();
-    printCapturedPieces(capturesd);
-
+    printCapturedPieces(captured);
     System.out.println();
-    System.out.println("Current player: " + chessMatch.getCurrentPlayer());
+
+    if (!chessMatch.getCheckMate()) {
+      System.out.println("Current player: " + chessMatch.getCurrentPlayer());
+
+      if (chessMatch.getCheck()) {
+        System.out.println("The player " + chessMatch.getCurrentPlayer() + " is in CHECK");
+      }
+
+    } else {
+      System.out.printf("CHECK MATE!%n The player %s is the Winner!",
+          chessMatch.getCurrentPlayer());
+
+    }
   }
 
   /**
