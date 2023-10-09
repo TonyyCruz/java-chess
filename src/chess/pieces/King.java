@@ -9,11 +9,9 @@ import chess.Color;
  * This creates the king chess piece.
  */
 public class King extends ChessPiece {
-  private Color pieceColor;
 
   public King(Board board, Color color) {
     super(board, color);
-    pieceColor = color;
   }
 
   private boolean canMove(Position position) {
@@ -80,7 +78,7 @@ public class King extends ChessPiece {
 
   @Override
   public String toString() {
-    if (pieceColor == Color.WHITE) {
+    if (getColor() == Color.WHITE) {
       return "♔";
     } else {
       return "♚";
