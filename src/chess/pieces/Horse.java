@@ -9,11 +9,9 @@ import chess.Color;
  * This creates the Horse chess piece.
  */
 public class Horse extends ChessPiece {
-  private Color pieceColor;
 
   public Horse(Board board, Color color) {
     super(board, color);
-    pieceColor = color;
   }
 
   @Override
@@ -24,7 +22,7 @@ public class Horse extends ChessPiece {
 
   @Override
   public String toString() {
-    if (pieceColor == Color.WHITE) {
+    if (getColor() == Color.WHITE) {
       return "♘";
     } else {
       return "♞";

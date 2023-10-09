@@ -9,11 +9,9 @@ import chess.Color;
  * This creates the Queen chess piece.
  */
 public class Queen extends ChessPiece {
-  private Color pieceColor;
 
   public Queen(Board board, Color color) {
     super(board, color);
-    pieceColor = color;
   }
 
   @Override
@@ -24,7 +22,7 @@ public class Queen extends ChessPiece {
 
   @Override
   public String toString() {
-    if (pieceColor == Color.WHITE) {
+    if (getColor() == Color.WHITE) {
       return "♕";
     } else {
       return "♛";

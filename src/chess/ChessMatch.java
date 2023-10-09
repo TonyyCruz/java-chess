@@ -9,6 +9,7 @@ import boardgame.Position;
 import chess.pieces.Bishop;
 import chess.pieces.Horse;
 import chess.pieces.King;
+import chess.pieces.Pawn;
 import chess.pieces.Queen;
 import chess.pieces.Rook;
 
@@ -123,11 +124,13 @@ public class ChessMatch {
   }
 
   /**
-   * This moving the pieces according to the matrix position. The source piece is placed in the
-   * target position and If any piece is captured it is removed from the board.
+   * Move the pieces according to the matrix position. The source piece is placed in the target
+   * position and If any piece is captured it is removed from the board.
    */
   private Piece makeMove(Position source, Position target) {
-    Piece movedPiece = board.removePieece(source);
+    ChessPiece movedPiece = (ChessPiece) board.removePieece(source);
+    movedPiece.increseMoveCount();
+
     Piece capturedPiece = board.removePieece(target);
     board.placePieece(movedPiece, target);
 
@@ -143,7 +146,9 @@ public class ChessMatch {
    * This method undo the last piece movement.
    */
   private void undoMove(Position source, Position target, Piece capturedPiece) {
-    Piece undoThisPieceMovie = board.removePieece(target);
+    ChessPiece undoThisPieceMovie = (ChessPiece) board.removePieece(target);
+    undoThisPieceMovie.decreaseMoveCount();
+
     board.placePieece(undoThisPieceMovie, source);
 
     if (capturedPiece != null) {
@@ -278,14 +283,14 @@ public class ChessMatch {
     placeNewPiece('g', 8, new Horse(board, Color.BLACK));
     placeNewPiece('h', 8, new Rook(board, Color.BLACK));
 
-    // placeNewPiece('a', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('b', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('c', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('d', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('e', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('f', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('g', 7, new Pawn(board, Color.BLACK));
-    // placeNewPiece('h', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('a', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('b', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('c', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('d', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('e', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('f', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('g', 7, new Pawn(board, Color.BLACK));
+    placeNewPiece('h', 7, new Pawn(board, Color.BLACK));
 
 
     placeNewPiece('a', 1, new Rook(board, Color.WHITE));
@@ -297,13 +302,13 @@ public class ChessMatch {
     placeNewPiece('g', 1, new Horse(board, Color.WHITE));
     placeNewPiece('h', 1, new Rook(board, Color.WHITE));
 
-    // placeNewPiece('a', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('b', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('c', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('d', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('e', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('f', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('g', 2, new Pawn(board, Color.WHITE));
-    // placeNewPiece('h', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('a', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('b', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('c', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('d', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('e', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('f', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('g', 2, new Pawn(board, Color.WHITE));
+    placeNewPiece('h', 2, new Pawn(board, Color.WHITE));
   }
 }

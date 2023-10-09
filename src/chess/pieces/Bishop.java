@@ -9,11 +9,9 @@ import chess.Color;
  * This creates the Bishop chess piece.
  */
 public class Bishop extends ChessPiece {
-  private Color pieceColor;
 
   public Bishop(Board board, Color color) {
     super(board, color);
-    pieceColor = color;
   }
 
   @Override
@@ -24,7 +22,7 @@ public class Bishop extends ChessPiece {
 
   @Override
   public String toString() {
-    if (pieceColor == Color.WHITE) {
+    if (getColor() == Color.WHITE) {
       return "♗";
     } else {
       return "♝";
