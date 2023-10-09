@@ -123,11 +123,13 @@ public class ChessMatch {
   }
 
   /**
-   * This moving the pieces according to the matrix position. The source piece is placed in the
-   * target position and If any piece is captured it is removed from the board.
+   * Move the pieces according to the matrix position. The source piece is placed in the target
+   * position and If any piece is captured it is removed from the board.
    */
   private Piece makeMove(Position source, Position target) {
-    Piece movedPiece = board.removePieece(source);
+    ChessPiece movedPiece = (ChessPiece) board.removePieece(source);
+    movedPiece.increseMoveCount();
+
     Piece capturedPiece = board.removePieece(target);
     board.placePieece(movedPiece, target);
 
@@ -143,7 +145,9 @@ public class ChessMatch {
    * This method undo the last piece movement.
    */
   private void undoMove(Position source, Position target, Piece capturedPiece) {
-    Piece undoThisPieceMovie = board.removePieece(target);
+    ChessPiece undoThisPieceMovie = (ChessPiece) board.removePieece(target);
+    undoThisPieceMovie.decreaseMoveCount();
+
     board.placePieece(undoThisPieceMovie, source);
 
     if (capturedPiece != null) {
