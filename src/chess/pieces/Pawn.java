@@ -18,16 +18,61 @@ public class Pawn extends ChessPiece {
   @Override
   public boolean[][] possibleMoves() {
     boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
-    Position p = new Position();
+    Position position1 = new Position();
+    Position position2 = new Position();
 
     if (getColor() == Color.WHITE) {
-      if (getMoveCount() == 0) {
-        mat[getChessPosition().getRow()][getChessPosition().getColumn() - 1] = true;
-        mat[getChessPosition().getRow()][getChessPosition().getColumn() - 2] = true;
+      position1.setValue(position.getRow() - 1, position.getColumn());
+      position2.setValue(position.getRow() - 2, position.getColumn());
+
+
+      if (canMoveThere(position1)) {
+        mat[position1.getRow()][position1.getColumn()] = true;
+      }
+
+      if (canMoveThere(position1) && canMoveThere(position2) && getMoveCount() == 0) {
+        mat[position2.getRow()][position2.getColumn()] = true;
+      }
+
+      position1.setValue(position.getRow() - 1, position.getColumn() - 1);
+      if (getBoard().positionExists(position1) && isThereOpponentPiece(position1)) {
+        mat[position1.getRow()][position1.getColumn()] = true;
+      }
+
+      position1.setValue(position.getRow() - 1, position.getColumn() + 1);
+      if (getBoard().positionExists(position1) && isThereOpponentPiece(position1)) {
+        mat[position1.getRow()][position1.getColumn()] = true;
+      }
+
+    } else {
+      position1.setValue(position.getRow() + 1, position.getColumn());
+      position2.setValue(position.getRow() + 2, position.getColumn());
+
+
+      if (canMoveThere(position1)) {
+        mat[position1.getRow()][position1.getColumn()] = true;
+      }
+
+      if (canMoveThere(position1) && canMoveThere(position2) && getMoveCount() == 0) {
+        mat[position2.getRow()][position2.getColumn()] = true;
+      }
+
+      position1.setValue(position.getRow() + 1, position.getColumn() + 1);
+      if (getBoard().positionExists(position1) && isThereOpponentPiece(position1)) {
+        mat[position1.getRow()][position1.getColumn()] = true;
+      }
+
+      position1.setValue(position.getRow() + 1, position.getColumn() - 1);
+      if (getBoard().positionExists(position1) && isThereOpponentPiece(position1)) {
+        mat[position1.getRow()][position1.getColumn()] = true;
       }
     }
 
     return mat;
+  }
+
+  private boolean canMoveThere(Position p) {
+    return getBoard().positionExists(p) && !getBoard().thereIsApiece(p);
   }
 
   @Override
