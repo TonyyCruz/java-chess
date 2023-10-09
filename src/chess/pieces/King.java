@@ -14,9 +14,12 @@ public class King extends ChessPiece {
     super(board, color);
   }
 
+  /**
+   * Check if the received position can be used.
+   */
   private boolean canMove(Position position) {
     ChessPiece p = (ChessPiece) getBoard().piece(position);
-    return p == null || p.getColor() != getColor();
+    return p == null || isThereOpponentPiece(position);
   }
 
   @Override
