@@ -40,10 +40,20 @@ public class ChessMatch {
     return turn;
   }
 
+  /**
+   * Inform if the King is in check.
+   * 
+   * @return boolean
+   */
   public boolean getCheck() {
     return check;
   }
 
+  /**
+   * Inform if the King got a check mate.
+   * 
+   * @return boolean
+   */
   public boolean getCheckMate() {
     return checkMate;
   }
@@ -278,7 +288,7 @@ public class ChessMatch {
     placeNewPiece('b', 8, new Horse(board, Color.BLACK));
     placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
     placeNewPiece('d', 8, new Queen(board, Color.BLACK));
-    placeNewPiece('e', 8, new King(board, Color.BLACK));
+    placeNewPiece('e', 8, new King(board, Color.BLACK, this));
     placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
     placeNewPiece('g', 8, new Horse(board, Color.BLACK));
     placeNewPiece('h', 8, new Rook(board, Color.BLACK));
@@ -297,7 +307,7 @@ public class ChessMatch {
     placeNewPiece('b', 1, new Horse(board, Color.WHITE));
     placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
     placeNewPiece('d', 1, new Queen(board, Color.WHITE));
-    placeNewPiece('e', 1, new King(board, Color.WHITE));
+    placeNewPiece('e', 1, new King(board, Color.WHITE, this));
     placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
     placeNewPiece('g', 1, new Horse(board, Color.WHITE));
     placeNewPiece('h', 1, new Rook(board, Color.WHITE));
