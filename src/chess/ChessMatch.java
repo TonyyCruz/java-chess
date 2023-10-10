@@ -138,15 +138,35 @@ public class ChessMatch {
    * position and If any piece is captured it is removed from the board.
    */
   private Piece makeMove(Position source, Position target) {
-    ChessPiece movedPiece = (ChessPiece) board.removePieece(source);
+    ChessPiece movedPiece = (ChessPiece) board.removePiece(source);
     movedPiece.increseMoveCount();
 
-    Piece capturedPiece = board.removePieece(target);
+    Piece capturedPiece = board.removePiece(target);
     board.placePieece(movedPiece, target);
 
     if (capturedPiece != null) {
       this.piecesOnTheBoard.remove(capturedPiece);
       this.capturedPieces.add(capturedPiece);
+    }
+
+    // *SPECIAL MOVE CASTLING* to RIGHT
+    if (movedPiece instanceof King && target.getColumn() == source.getColumn() + 2) {
+      Position rightRookSource = new Position(source.getRow(), source.getColumn() + 3);
+      Position rightRookTarget = new Position(source.getRow(), source.getColumn() + 1);
+
+      ChessPiece rook = (ChessPiece) board.removePiece(rightRookSource);
+      board.placePieece(rook, rightRookTarget);
+      rook.increseMoveCount();
+    }
+
+    // *SPECIAL MOVE CASTLING* to LEFT
+    if (movedPiece instanceof King && target.getColumn() == source.getColumn() - 2) {
+      Position leftRookSource = new Position(source.getRow(), source.getColumn() - 4);
+      Position leftRookTarget = new Position(source.getRow(), source.getColumn() - 1);
+
+      ChessPiece rook = (ChessPiece) board.removePiece(leftRookSource);
+      board.placePieece(rook, leftRookTarget);
+      rook.increseMoveCount();
     }
 
     return capturedPiece;
@@ -156,7 +176,7 @@ public class ChessMatch {
    * This method undo the last piece movement.
    */
   private void undoMove(Position source, Position target, Piece capturedPiece) {
-    ChessPiece undoThisPieceMovie = (ChessPiece) board.removePieece(target);
+    ChessPiece undoThisPieceMovie = (ChessPiece) board.removePiece(target);
     undoThisPieceMovie.decreaseMoveCount();
 
     board.placePieece(undoThisPieceMovie, source);
@@ -165,6 +185,26 @@ public class ChessMatch {
       board.placePieece(capturedPiece, target);
       piecesOnTheBoard.add(capturedPiece);
       this.capturedPieces.remove(capturedPiece);
+    }
+
+    // *SPECIAL MOVE CASTLING* to RIGHT
+    if (undoThisPieceMovie instanceof King && target.getColumn() == source.getColumn() + 2) {
+      Position rightRookSource = new Position(source.getRow(), source.getColumn() + 3);
+      Position rightRookTarget = new Position(source.getRow(), source.getColumn() + 1);
+
+      ChessPiece rook = (ChessPiece) board.removePiece(rightRookTarget);
+      board.placePieece(rook, rightRookSource);
+      rook.decreaseMoveCount();
+    }
+
+    // *SPECIAL MOVE CASTLING* to LEFT
+    if (undoThisPieceMovie instanceof King && target.getColumn() == source.getColumn() - 2) {
+      Position leftRookSource = new Position(source.getRow(), source.getColumn() - 4);
+      Position leftRookTarget = new Position(source.getRow(), source.getColumn() - 1);
+
+      ChessPiece rook = (ChessPiece) board.removePiece(leftRookTarget);
+      board.placePieece(rook, leftRookSource);
+      rook.decreaseMoveCount();
     }
   }
 
