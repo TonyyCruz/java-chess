@@ -45,6 +45,22 @@ public class Program {
           captured.add(capturedPiece);
         }
 
+        if (chessMatch.getPromoted() != null) {
+          System.out.println("Choose the piece you want to promote:");
+          System.out.println("Press: 'Q' to Queen, 'H' to Horse, 'B' to bishop or 'R' to rook:");
+          sc.nextLine();
+          String type = sc.nextLine().toUpperCase();
+
+          while ("QHBR".indexOf(type) < 0 || type == "") {
+            System.out.println("Invalid piece type!");
+            System.out.println(
+                "Please choose: 'Q' to Queen, 'H' to Horse, 'B' to bishop or 'R' to rook:");
+            type = sc.nextLine().toUpperCase();
+          }
+
+          chessMatch.replacePromotedPiece(type);
+        }
+
       } catch (ChessException e) {
         System.out.println(e.getMessage());
         sc.nextLine();

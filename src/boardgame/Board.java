@@ -67,7 +67,7 @@ public class Board {
   /**
    * This remove the piece on the received position.
    */
-  public Piece removePieece(Position position) {
+  public Piece removePiece(Position position) {
     if (!positionExists(position)) {
       throw new BoardException("Board error: The position" + position + "does not exists.");
     }
