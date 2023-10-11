@@ -23,6 +23,7 @@ public class ChessMatch {
   private boolean check;
   private boolean checkMate;
   private ChessPiece enPassantVunerable;
+  private ChessPiece promoted;
 
   private List<Piece> piecesOnTheBoard = new ArrayList<>();
   private List<Piece> capturedPieces = new ArrayList<>();
@@ -65,6 +66,10 @@ public class ChessMatch {
 
   public ChessPiece getEnPassantVunerable() {
     return enPassantVunerable;
+  }
+
+  public ChessPiece getPromoted() {
+    return promoted;
   }
 
   /**
@@ -130,6 +135,14 @@ public class ChessMatch {
 
     ChessPiece movedPiece = (ChessPiece) board.piece(target);
 
+    // *SPECIAL MOVE* PROMOTION
+    this.promoted = null;
+    if (movedPiece instanceof Pawn && (target.getRow() == 0 || target.getRow() == 7)) {
+      promoted = (ChessPiece) board.piece(target);
+      promoted = replacePromotedPiece("Q");
+      // ============================================================================================================================
+    }
+
     check = testCheck(opponentColor(currentPlayer));
 
     if (testCheckMate(opponentColor(currentPlayer))) {
@@ -147,6 +160,42 @@ public class ChessMatch {
     }
 
     return (ChessPiece) capturedPiece;
+  }
+
+  public ChessPiece replacePromotedPiece(String type) {
+    if (this.promoted == null) {
+      throw new IllegalStateException("There is no piece to be promoted.");
+    }
+
+    Position pawnPosition = this.promoted.getChessPosition().toPosition();
+    Piece pawnPiece = board.removePiece(pawnPosition);
+    this.piecesOnTheBoard.remove(pawnPiece);
+
+    ChessPiece newPiece = newPiece(type, this.promoted.getColor());
+    board.placePieece(newPiece, pawnPosition);
+    piecesOnTheBoard.add(newPiece);
+
+    return newPiece;
+  }
+
+  private ChessPiece newPiece(String type, Color color) {
+    type = type.toUpperCase();
+    switch (type) {
+      case "Q":
+        return new Queen(board, color);
+
+      case "B":
+        return new Bishop(board, color);
+
+      case "H":
+        return new Horse(board, color);
+
+      case "R":
+        return new Rook(board, color);
+
+      default:
+        throw new ChessException("Please put a valid piece type.");
+    }
   }
 
   /**
