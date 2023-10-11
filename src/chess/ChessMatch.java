@@ -139,8 +139,7 @@ public class ChessMatch {
     this.promoted = null;
     if (movedPiece instanceof Pawn && (target.getRow() == 0 || target.getRow() == 7)) {
       promoted = (ChessPiece) board.piece(target);
-      promoted = replacePromotedPiece("Q");
-      // ============================================================================================================================
+
     }
 
     check = testCheck(opponentColor(currentPlayer));
@@ -179,7 +178,6 @@ public class ChessMatch {
   }
 
   private ChessPiece newPiece(String type, Color color) {
-    type = type.toUpperCase();
     switch (type) {
       case "Q":
         return new Queen(board, color);
