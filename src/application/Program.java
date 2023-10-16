@@ -51,7 +51,7 @@ public class Program {
           sc.nextLine();
           String type = sc.nextLine().toUpperCase();
 
-          while ("QHBR".indexOf(type) < 0 || type == "") {
+          while (type.length() != 1 || !"QHBR".contains(type)) {
             System.out.println("Invalid piece type!");
             System.out.println(
                 "Please choose: 'Q' to Queen, 'H' to Horse, 'B' to bishop or 'R' to rook:");

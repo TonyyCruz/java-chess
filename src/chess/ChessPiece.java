@@ -6,13 +6,13 @@ import boardgame.Position;
 
 
 /**
- * This class is responsible for instantiating chess pieces.
+ * Create a generic chess pieces.
  */
 public abstract class ChessPiece extends Piece {
   private Color color;
   private int moveCount;
 
-  public ChessPiece(Board board, Color color) {
+  protected ChessPiece(Board board, Color color) {
     super(board);
     this.color = color;
   }
@@ -39,8 +39,6 @@ public abstract class ChessPiece extends Piece {
 
   protected boolean isThereOpponentPiece(Position position) {
     ChessPiece p = (ChessPiece) getBoard().piece(position);
-
     return p != null && p.getColor() != color;
   }
-
 }

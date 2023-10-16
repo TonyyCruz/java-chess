@@ -1,7 +1,7 @@
 package boardgame;
 
 /**
- * This is responsible for managing the board and showing the position of the pieces.
+ * This is responsible for managing the board and showing the position of the this.pieces.
  */
 public class Board {
   private int rows;
@@ -17,15 +17,15 @@ public class Board {
     }
     this.rows = rows;
     this.columns = columns;
-    pieces = new Piece[rows][columns];
+    this.pieces = new Piece[rows][columns];
   }
 
   public int getRows() {
-    return rows;
+    return this.rows;
   }
 
   public int getColumns() {
-    return columns;
+    return this.columns;
   }
 
   /**
@@ -36,7 +36,7 @@ public class Board {
     if (!positionExists(row, column)) {
       throw new BoardException("This position does not exist on the board.");
     }
-    return pieces[row][column];
+    return this.pieces[row][column];
   }
 
   /**
@@ -47,8 +47,7 @@ public class Board {
     if (!positionExists(position)) {
       throw new BoardException("Board error: This position does not exist on the board.");
     }
-
-    return pieces[position.getRow()][position.getColumn()];
+    return this.pieces[position.getRow()][position.getColumn()];
   }
 
   /**
@@ -59,8 +58,7 @@ public class Board {
     if (thereIsApiece(position)) {
       throw new BoardException("Board error: Already have one piece on the position" + position);
     }
-
-    pieces[position.getRow()][position.getColumn()] = piece;
+    this.pieces[position.getRow()][position.getColumn()] = piece;
     piece.position = position;
   }
 
@@ -71,16 +69,12 @@ public class Board {
     if (!positionExists(position)) {
       throw new BoardException("Board error: The position" + position + "does not exists.");
     }
-
     if (piece(position) == null) {
       return null;
     }
-
     Piece pieceToBeRemoved = piece(position);
     pieceToBeRemoved.position = null;
-
-    pieces[position.getRow()][position.getColumn()] = null;
-
+    this.pieces[position.getRow()][position.getColumn()] = null;
     return pieceToBeRemoved;
   }
 
@@ -99,7 +93,6 @@ public class Board {
     if (!positionExists(position)) {
       throw new BoardException("Board error: This position does not exist on the board.");
     }
-
     return piece(position) != null;
   }
 

@@ -1,7 +1,7 @@
 package boardgame;
 
 /**
- * This class is the chess pieces base.
+ * Creating a generic piece.
  */
 public abstract class Piece {
   protected Position position;
@@ -9,6 +9,10 @@ public abstract class Piece {
 
   public Piece(Board board) {
     this.board = board;
+  }
+
+  public Position getPosition() {
+    return this.position;
   }
 
   protected Board getBoard() {
@@ -24,7 +28,7 @@ public abstract class Piece {
    * 
    * @return Whether or not the piece can move to the given position.
    */
-  public boolean possibleMove(Position position) {
+  public boolean isMovementPossible(Position position) {
     return possibleMoves()[position.getRow()][position.getColumn()];
   }
 
@@ -32,11 +36,10 @@ public abstract class Piece {
    * This checks if the piece has some possible move.
    */
   public boolean isThereAnyPossibleMove(Position position) {
-    boolean[][] mat = possibleMoves();
-
-    for (int i = 0; i < mat.length; i += 1) {
-      for (int j = 0; j < mat[i].length; j += 1) {
-        if (mat[i][j]) {
+    boolean[][] matrix = possibleMoves();
+    for (boolean[] row : matrix) {
+      for (boolean column : row) {
+        if (column) {
           return true;
         }
       }
