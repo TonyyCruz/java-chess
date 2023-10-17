@@ -103,11 +103,11 @@ public class Ui {
    * This shows the frame on the screen.
    */
   public static void printBoard(ChessPiece[][] pieces, boolean[][] possibleMoves) {
-    for (int i = 0; i < pieces.length; i += 1) {
-      System.out.printf("%d ", pieces.length - i);
+    for (int row = 0; row < pieces.length; row += 1) {
+      System.out.printf("%d ", pieces.length - row);
 
-      for (int j = 0; j < pieces.length; j += 1) {
-        print(pieces[i][j], possibleMoves[i][j]);
+      for (int column = 0; column < pieces.length; column += 1) {
+        print(pieces[row][column], possibleMoves[row][column]);
       }
       System.out.println();
     }
