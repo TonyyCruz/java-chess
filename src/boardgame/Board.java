@@ -45,7 +45,7 @@ public class Board {
    */
   public Piece piece(Position position) {
     if (!positionExists(position)) {
-      throw new BoardException("Board error: This position does not exist on the board.");
+      throw new BoardException("This position does not exist on the board.");
     }
     return this.pieces[position.getRow()][position.getColumn()];
   }

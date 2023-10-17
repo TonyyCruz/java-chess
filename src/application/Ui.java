@@ -37,7 +37,7 @@ public class Ui {
       return new ChessPosition(column, row);
 
     } catch (RuntimeException e) {
-      throw new InputMismatchException("Position error: The position need be from 'a1' to 'h8'.");
+      throw new InputMismatchException("The position need be from 'a1' to 'h8'.");
     }
   }
 
