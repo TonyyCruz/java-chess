@@ -45,8 +45,6 @@ public class ChessMatch {
 
   /**
    * Inform if the King is in check.
-   * 
-   * @return boolean
    */
   public boolean getCheck() {
     return check;
@@ -54,8 +52,6 @@ public class ChessMatch {
 
   /**
    * Inform if the King got a check mate.
-   * 
-   * @return boolean
    */
   public boolean getCheckMate() {
     return checkMate;
@@ -121,13 +117,13 @@ public class ChessMatch {
     validateSourcePosition(source);
     validateTargetPosition(source, target);
     Piece capturedPiece = makeMove(source, target);
-    boolean didYouPutYourselfInCheck = testCheck(currentPlayer);
+    boolean didYouPutYourselfInCheck = testCheck(this.currentPlayer);
     if (didYouPutYourselfInCheck) {
       undoMove(source, target, capturedPiece);
       throw new ChessException("You can´t put yourself in check.");
     }
     ChessPiece movedPiece = (ChessPiece) board.piece(target);
-    this.promoted = null; // ================================================================ change
+    this.promoted = null;
     if (canThisPieceBePromoted(movedPiece, target)) {
       this.promoted = (ChessPiece) board.piece(target);
     }
@@ -158,19 +154,19 @@ public class ChessMatch {
     return piece instanceof Pawn && walkedTwoSteps;
   }
 
+  /**
+   * Receive the type the promoted pawn will receive and promote it.
+   */
   public ChessPiece replacePromotedPiece(String type) {
     if (this.promoted == null) {
       throw new IllegalStateException("There is no piece to be promoted.");
     }
-
     Position pawnPosition = this.promoted.getPosition();
     Piece pawnPiece = board.removePiece(pawnPosition);
     this.piecesOnTheBoard.remove(pawnPiece);
-
     ChessPiece newPiece = newPiece(type, this.promoted.getColor());
     board.placePieece(newPiece, pawnPosition);
     piecesOnTheBoard.add(newPiece);
-
     return newPiece;
   }
 
@@ -185,7 +181,7 @@ public class ChessMatch {
       case "R":
         return new Rook(board, color);
       default:
-        throw new ChessException("Please put a valid piece type.");
+        throw new ChessException("Invalid promotion type. Please choes 'Q', 'B', 'H' or 'R'.");
     }
   }
 
@@ -280,18 +276,11 @@ public class ChessMatch {
 
   /**
    * This filter the pieces in the game and returns the pieces with received color.
-   * 
-   * @param color
-   * 
-   * @return The pieces that are in the game and have the color received by parameter.
    */
-  private List<Piece> getPiecesWithTheColor(Color color) {
+  public List<Piece> getPiecesWithTheColor(Color color) {
     return piecesOnTheBoard.stream().filter(x -> ((ChessPiece) x).getColor() == color).toList();
   }
 
-  /**
-   * This method returns the king with the received color.
-   */
   private ChessPiece getKingByColor(Color color) {
     List<Piece> playerPieces = getPiecesWithTheColor(color);
     for (Piece p : playerPieces) {
@@ -304,10 +293,6 @@ public class ChessMatch {
 
   /**
    * Verify if the player with received color is in check.
-   * 
-   * @param color
-   * 
-   * @return boolean - If the king with received color is in check or not.
    */
   private boolean testCheck(Color color) {
     Position kingPosition = getKingByColor(color).getPosition();
@@ -388,13 +373,14 @@ public class ChessMatch {
    * This places the pieces in their starting position.
    */
   public void initialSetup() {
+    // Black pieces
     placeNewPiece('a', 8, new Rook(board, Color.BLACK));
     placeNewPiece('b', 8, new Horse(board, Color.BLACK));
     placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
     placeNewPiece('d', 8, new Queen(board, Color.BLACK));
     placeNewPiece('e', 8, new King(board, Color.BLACK, this));
-    placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
-    placeNewPiece('g', 8, new Horse(board, Color.BLACK));
+    // placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
+    // placeNewPiece('g', 8, new Horse(board, Color.BLACK));
     placeNewPiece('h', 8, new Rook(board, Color.BLACK));
 
     placeNewPiece('a', 7, new Pawn(board, Color.BLACK, this));
@@ -406,23 +392,22 @@ public class ChessMatch {
     placeNewPiece('g', 7, new Pawn(board, Color.BLACK, this));
     placeNewPiece('h', 7, new Pawn(board, Color.BLACK, this));
 
-
     placeNewPiece('a', 1, new Rook(board, Color.WHITE));
     placeNewPiece('b', 1, new Horse(board, Color.WHITE));
     placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
     placeNewPiece('d', 1, new Queen(board, Color.WHITE));
     placeNewPiece('e', 1, new King(board, Color.WHITE, this));
-    placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
-    placeNewPiece('g', 1, new Horse(board, Color.WHITE));
+    // placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
+    // placeNewPiece('g', 1, new Horse(board, Color.WHITE));
     placeNewPiece('h', 1, new Rook(board, Color.WHITE));
 
     placeNewPiece('a', 2, new Pawn(board, Color.WHITE, this));
     placeNewPiece('b', 2, new Pawn(board, Color.WHITE, this));
     placeNewPiece('c', 2, new Pawn(board, Color.WHITE, this));
-    placeNewPiece('d', 2, new Pawn(board, Color.WHITE, this));
-    placeNewPiece('e', 2, new Pawn(board, Color.WHITE, this));
-    placeNewPiece('f', 2, new Pawn(board, Color.WHITE, this));
-    placeNewPiece('g', 2, new Pawn(board, Color.WHITE, this));
-    placeNewPiece('h', 2, new Pawn(board, Color.WHITE, this));
+    // placeNewPiece('d', 2, new Pawn(board, Color.WHITE, this));
+    // placeNewPiece('e', 2, new Pawn(board, Color.WHITE, this));
+    // placeNewPiece('f', 2, new Pawn(board, Color.WHITE, this));
+    // placeNewPiece('g', 2, new Pawn(board, Color.WHITE, this));
+    // placeNewPiece('h', 2, new Pawn(board, Color.WHITE, this));
   }
 }
