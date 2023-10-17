@@ -1,6 +1,8 @@
 package chess.pieces;
 
+import java.util.List;
 import boardgame.Board;
+import boardgame.Piece;
 import boardgame.Position;
 import chess.ChessMatch;
 import chess.ChessPiece;
@@ -17,102 +19,118 @@ public class King extends ChessPiece {
     this.chessMatch = chessMatch;
   }
 
-  /**
-   * Check if the received position can be used.
-   */
-  private boolean canMove(Position position) {
-    ChessPiece p = (ChessPiece) getBoard().piece(position);
-    return p == null || isThereOpponentPiece(position);
-  }
-
-  private boolean testRookCastling(Position position) {
-    ChessPiece p = (ChessPiece) getBoard().piece(position);
-    return p != null && p instanceof Rook && p.getMoveCount() == 0 && p.getColor() == getColor();
-  }
-
   @Override
   public boolean[][] possibleMoves() {
-    boolean[][] mat = new boolean[getBoard().getRows()][getBoard().getColumns()];
-
-    Position p = new Position();
-
-    // Above
-    p.setValue(position.getRow() - 1, position.getColumn());
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    boolean[][] matrix = new boolean[getBoard().getRows()][getBoard().getColumns()];
+    Position southPosition = new Position(position.getRow() - 1, position.getColumn());
+    if (canMoveThere(southPosition)) {
+      matrix[southPosition.getRow()][southPosition.getColumn()] = true;
     }
-
-    // Below
-    p.setValue(position.getRow() + 1, position.getColumn());
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position northPosition = new Position(position.getRow() + 1, position.getColumn());
+    if (canMoveThere(northPosition)) {
+      matrix[northPosition.getRow()][northPosition.getColumn()] = true;
     }
-
-    // Left
-    p.setValue(position.getRow(), position.getColumn() - 1);
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position westPosition = new Position(position.getRow(), position.getColumn() - 1);
+    if (canMoveThere(westPosition)) {
+      matrix[westPosition.getRow()][westPosition.getColumn()] = true;
     }
-
-    // Right
-    p.setValue(position.getRow(), position.getColumn() + 1);
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position eastPosition = new Position(position.getRow(), position.getColumn() + 1);
+    if (canMoveThere(eastPosition)) {
+      matrix[eastPosition.getRow()][eastPosition.getColumn()] = true;
     }
-
-    // NW
-    p.setValue(position.getRow() - 1, position.getColumn() - 1);
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position nwPosition = new Position(position.getRow() - 1, position.getColumn() - 1);
+    if (canMoveThere(nwPosition)) {
+      matrix[nwPosition.getRow()][nwPosition.getColumn()] = true;
     }
-
-    // NE
-    p.setValue(position.getRow() - 1, position.getColumn() + 1);
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position nePosition = new Position(position.getRow() - 1, position.getColumn() + 1);
+    if (canMoveThere(nePosition)) {
+      matrix[nePosition.getRow()][nePosition.getColumn()] = true;
     }
-
-    // SW
-    p.setValue(position.getRow() + 1, position.getColumn() - 1);
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position swPosition = new Position(position.getRow() + 1, position.getColumn() - 1);
+    if (canMoveThere(swPosition)) {
+      matrix[swPosition.getRow()][swPosition.getColumn()] = true;
     }
-
-    // SE
-    p.setValue(position.getRow() + 1, position.getColumn() + 1);
-    if (getBoard().positionExists(p) && canMove(p)) {
-      mat[p.getRow()][p.getColumn()] = true;
+    Position sePosition = new Position(position.getRow() + 1, position.getColumn() - 1);
+    if (canMoveThere(sePosition)) {
+      matrix[sePosition.getRow()][sePosition.getColumn()] = true;
     }
+    if (canCastlingRight()) {
+      matrix[position.getRow()][position.getColumn() + 2] = true;
+    }
+    if (canCastlingLeft()) {
+      matrix[position.getRow()][position.getColumn() - 2] = true;
+    }
+    return matrix;
+  }
 
-    // SPECIAL move Castling
-    if (getMoveCount() == 0 && !chessMatch.getCheck()) {
-      // Castling to right.
-      Position rightRook = new Position(position.getRow(), position.getColumn() + 3);
-      if (testRookCastling(rightRook)) {
-        Position oneToRight = new Position(position.getRow(), position.getColumn() + 1);
-        Position twoToRight = new Position(position.getRow(), position.getColumn() + 2);
+  private boolean canThisRookCastling(Position position) {
+    if (!getBoard().positionExists(position)) {
+      return false;
+    }
+    ChessPiece piece = (ChessPiece) getBoard().piece(position);
+    return piece instanceof Rook && piece.getMoveCount() == 0 && piece.getColor() == getColor();
+  }
 
-        if (getBoard().piece(oneToRight) == null && getBoard().piece(twoToRight) == null) {
-          mat[position.getRow()][position.getColumn() + 2] = true;
-        }
+  private boolean isSafePosition(Position position) {
+    Color opponentColor = chessMatch.opponentColor(this.getColor());
+    List<Piece> opponentPieces = chessMatch.getPiecesWithTheColor(opponentColor);
+    for (Piece p : opponentPieces) {
+      if (p.isMovementPossible(position)) {
+        return false;
       }
-
-      // Castling to left.
-      Position leftRook = new Position(position.getRow(), position.getColumn() - 4);
-      if (testRookCastling(leftRook)) {
-        Position oneToLeft = new Position(position.getRow(), position.getColumn() - 1);
-        Position twoToLeft = new Position(position.getRow(), position.getColumn() - 2);
-        Position threeToLeft = new Position(position.getRow(), position.getColumn() - 3);
-
-        if (getBoard().piece(oneToLeft) == null && getBoard().piece(twoToLeft) == null
-            && getBoard().piece(threeToLeft) == null) {
-          mat[position.getRow()][position.getColumn() - 2] = true;
-        }
-      }
-
     }
+    return true;
+  }
 
-    return mat;
+  /**
+   * Castling is permitted provided all of the following conditions are met.
+   * <ol>
+   * <li>Neither the king nor the rook has previously moved.</li>
+   * <li>There are no pieces between the king and the rook.</li>
+   * <li>The king is not currently in check.</li>
+   * <li>The king does not pass through or finish on a square that is attacked by an enemy
+   * piece.</li>
+   * </ol>
+   */
+  private boolean canCastlingRight() {
+    if (getColor() != chessMatch.getCurrentPlayer()) {
+      return false;
+    }
+    Position rightRookPosition = new Position(position.getRow(), position.getColumn() + 3);
+    if (!canThisRookCastling(rightRookPosition) || getMoveCount() != 0 || chessMatch.getCheck()) {
+      return false;
+    }
+    Position oneToRight = new Position(position.getRow(), position.getColumn() + 1);
+    Position twoToRight = new Position(position.getRow(), position.getColumn() + 2);
+    boolean isSafeWay = isSafePosition(oneToRight) && isSafePosition(twoToRight);
+    return getBoard().piece(oneToRight) == null && getBoard().piece(twoToRight) == null
+        && isSafeWay;
+  }
+
+  /**
+   * Castling is permitted provided all of the following conditions are met.
+   * <ol>
+   * <li>Neither the king nor the rook has previously moved.</li>
+   * <li>There are no pieces between the king and the rook.</li>
+   * <li>The king is not currently in check.</li>
+   * <li>The king does not pass through or finish on a square that is attacked by an enemy
+   * piece.</li>
+   * </ol>
+   */
+  private boolean canCastlingLeft() {
+    if (getColor() != chessMatch.getCurrentPlayer()) {
+      return false;
+    }
+    Position leftRookPosition = new Position(position.getRow(), position.getColumn() - 4);
+    if (!canThisRookCastling(leftRookPosition) || getMoveCount() != 0 || chessMatch.getCheck()) {
+      return false;
+    }
+    Position oneToLeft = new Position(position.getRow(), position.getColumn() - 1);
+    Position twoToLeft = new Position(position.getRow(), position.getColumn() - 2);
+    Position threeToLeft = new Position(position.getRow(), position.getColumn() - 3);
+    boolean isSafeWay = isSafePosition(oneToLeft) && isSafePosition(twoToLeft);
+    return getBoard().piece(oneToLeft) == null && getBoard().piece(twoToLeft) == null
+        && getBoard().piece(threeToLeft) == null && isSafeWay;
   }
 
   @Override
