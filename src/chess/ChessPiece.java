@@ -37,15 +37,8 @@ public abstract class ChessPiece extends Piece {
     moveCount -= 1;
   }
 
-  /**
-   * Check if the received position is valid to move.
-   */
-  protected boolean canMoveThere(Position position) {
-    if (!getBoard().positionExists(position)) {
-      return false;
-    }
-    ChessPiece pieceInThePosition = (ChessPiece) getBoard().piece(position);
-    return pieceInThePosition == null || isThereOpponentPiece(position);
+  public boolean isEmptyPosition(Position position) {
+    return getBoard().positionExists(position) && !getBoard().thereIsApiece(position);
   }
 
   protected boolean isThereOpponentPiece(Position position) {

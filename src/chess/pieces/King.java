@@ -19,6 +19,14 @@ public class King extends ChessPiece {
     this.chessMatch = chessMatch;
   }
 
+  protected boolean canMoveThere(Position position) {
+    if (!getBoard().positionExists(position)) {
+      return false;
+    }
+    ChessPiece pieceInThePosition = (ChessPiece) getBoard().piece(position);
+    return pieceInThePosition == null || isThereOpponentPiece(position);
+  }
+
   @Override
   public boolean[][] possibleMoves() {
     boolean[][] matrix = new boolean[getBoard().getRows()][getBoard().getColumns()];
@@ -103,8 +111,9 @@ public class King extends ChessPiece {
     Position oneToRight = new Position(position.getRow(), position.getColumn() + 1);
     Position twoToRight = new Position(position.getRow(), position.getColumn() + 2);
     boolean isSafeWay = isSafePosition(oneToRight) && isSafePosition(twoToRight);
-    return getBoard().piece(oneToRight) == null && getBoard().piece(twoToRight) == null
-        && isSafeWay;
+    boolean isTheWayEmpty =
+        getBoard().piece(oneToRight) == null && getBoard().piece(twoToRight) == null;
+    return isTheWayEmpty && isSafeWay;
   }
 
   /**
@@ -129,8 +138,9 @@ public class King extends ChessPiece {
     Position twoToLeft = new Position(position.getRow(), position.getColumn() - 2);
     Position threeToLeft = new Position(position.getRow(), position.getColumn() - 3);
     boolean isSafeWay = isSafePosition(oneToLeft) && isSafePosition(twoToLeft);
-    return getBoard().piece(oneToLeft) == null && getBoard().piece(twoToLeft) == null
-        && getBoard().piece(threeToLeft) == null && isSafeWay;
+    boolean isTheWayEmpty = getBoard().piece(oneToLeft) == null
+        && getBoard().piece(twoToLeft) == null && getBoard().piece(threeToLeft) == null;
+    return isTheWayEmpty && isSafeWay;
   }
 
   @Override

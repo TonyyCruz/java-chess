@@ -25,7 +25,6 @@ public class ChessMatch {
   private boolean checkMate;
   private ChessPiece enPassantVunerable;
   private ChessPiece promoted;
-
   private List<Piece> piecesOnTheBoard = new ArrayList<>();
   private List<Piece> capturedPieces = new ArrayList<>();
 
@@ -85,13 +84,6 @@ public class ChessMatch {
   /**
    * This method receive a piece, a column and a row. The received piece is added to the board in
    * the received position and is added on the piecesOnTheTable.
-   * 
-   * @param column
-   *
-   * @param row
-   * 
-   * @param piece
-   * 
    */
   private void placeNewPiece(char column, int row, ChessPiece piece) {
     board.placePieece(piece, new ChessPosition(column, row).toPosition());
@@ -341,8 +333,6 @@ public class ChessMatch {
   /**
    * verify if the piece in the received position exists, if can move and in the piece belong to the
    * player.
-   * 
-   * @param position
    */
   private void validateSourcePosition(Position position) {
     if (!board.thereIsApiece(position)) {
@@ -373,14 +363,13 @@ public class ChessMatch {
    * This places the pieces in their starting position.
    */
   public void initialSetup() {
-    // Black pieces
     placeNewPiece('a', 8, new Rook(board, Color.BLACK));
     placeNewPiece('b', 8, new Horse(board, Color.BLACK));
     placeNewPiece('c', 8, new Bishop(board, Color.BLACK));
     placeNewPiece('d', 8, new Queen(board, Color.BLACK));
     placeNewPiece('e', 8, new King(board, Color.BLACK, this));
-    // placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
-    // placeNewPiece('g', 8, new Horse(board, Color.BLACK));
+    placeNewPiece('f', 8, new Bishop(board, Color.BLACK));
+    placeNewPiece('g', 8, new Horse(board, Color.BLACK));
     placeNewPiece('h', 8, new Rook(board, Color.BLACK));
 
     placeNewPiece('a', 7, new Pawn(board, Color.BLACK, this));
@@ -397,17 +386,17 @@ public class ChessMatch {
     placeNewPiece('c', 1, new Bishop(board, Color.WHITE));
     placeNewPiece('d', 1, new Queen(board, Color.WHITE));
     placeNewPiece('e', 1, new King(board, Color.WHITE, this));
-    // placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
-    // placeNewPiece('g', 1, new Horse(board, Color.WHITE));
+    placeNewPiece('f', 1, new Bishop(board, Color.WHITE));
+    placeNewPiece('g', 1, new Horse(board, Color.WHITE));
     placeNewPiece('h', 1, new Rook(board, Color.WHITE));
 
     placeNewPiece('a', 2, new Pawn(board, Color.WHITE, this));
     placeNewPiece('b', 2, new Pawn(board, Color.WHITE, this));
     placeNewPiece('c', 2, new Pawn(board, Color.WHITE, this));
-    // placeNewPiece('d', 2, new Pawn(board, Color.WHITE, this));
-    // placeNewPiece('e', 2, new Pawn(board, Color.WHITE, this));
-    // placeNewPiece('f', 2, new Pawn(board, Color.WHITE, this));
-    // placeNewPiece('g', 2, new Pawn(board, Color.WHITE, this));
-    // placeNewPiece('h', 2, new Pawn(board, Color.WHITE, this));
+    placeNewPiece('d', 2, new Pawn(board, Color.WHITE, this));
+    placeNewPiece('e', 2, new Pawn(board, Color.WHITE, this));
+    placeNewPiece('f', 2, new Pawn(board, Color.WHITE, this));
+    placeNewPiece('g', 2, new Pawn(board, Color.WHITE, this));
+    placeNewPiece('h', 2, new Pawn(board, Color.WHITE, this));
   }
 }
